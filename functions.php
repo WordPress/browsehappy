@@ -46,7 +46,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'normalized' => 1, // just first number
 			'facebook' => 'internetexplorer',
 			'url' => 'http://www.microsoft.com/windows/internet-explorer/',
-			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;' ),
+			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;', 'browsehappy' ),
 		),
 	);
 	if ( false === $browser )
@@ -186,4 +186,36 @@ class BrowseHappy_WP extends WP {
 	function handle_404() {
 		status_header( 200 );
 	}
+}
+
+if ( function_exists( 'browsehappy_parse_user_agent' ) )
+	add_action( 'browsehappy_browser_notice', 'browsehappy_browser_notice' );
+
+function browsehappy_browser_notice() {
+	$ua = $_SERVER['HTTP_USER_AGENT'];
+	$results = browsehappy_parse_user_agent( $ua );
+	if ( ! $results['upgrade'] )
+		return;
+	?>
+	<div id="browser-status" class="wrap">
+	<?php if ( $results['name'] == 'Internet Explorer' && strpos( $ua, 'Windows NT 5.' ) !== false ) : ?>
+		<?php if ( $results['insecure'] ) : ?>
+			<p><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+                        <?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
+		<?php else : ?>
+			<p><?php _e( 'It looks like you&#8217;re using an old version of Internet Explorer.', 'browsehappy' ); ?>
+		<?php endif; ?>
+			<?php _e( 'On Windows XP, you are unable to update to the latest version. For the best experience on the web, we suggest you try a new browser.', 'browsehappy' ); ?></p>
+	<?php elseif ( $results['insecure'] ) : ?>
+		<p class="browser-status-text"><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+			<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
+			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+	<?php else : ?>
+		<p class="browser-status-text"><?php printf( __( 'Your browser is out of date! It looks like you&#8217;re using an old version of %s.', 'browsehappy' ), $results['name'] ); ?>
+			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+	<?php endif; ?>
+	</div>
+	<?php
 }

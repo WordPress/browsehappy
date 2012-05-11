@@ -18,7 +18,7 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo get_template_directory_uri(); ?>/imgs/apple-touch-icon-114x114.png" />
 
 	<!--[if (gt IE 6)|!(IE)]><!-->
-		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css" />
+		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css?1" />
 		<script src="<?php echo get_template_directory_uri(); ?>/js/modernizr-1.6.min.js"></script>
 		<script src="http://use.typekit.com/lsw6yis.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -28,6 +28,13 @@
 </head>
 
 <body>
+<?php
+/*
+<div id="i18n-alert">
+	<p>Browse Happy is also available in %s. <a href="%s">Click here to change the language to %s</a>.</p>
+</div>
+*/
+?>
 <div id="body-wrap">
 
 	<header>
@@ -36,7 +43,7 @@
 			<h2><?php _e( 'Online. Worry-free. <em>Upgrade your browser today</em>!', 'browsehappy' ); ?></h2>
 		</hgroup>
 	</header>
-
+	<?php do_action( 'browsehappy_browser_notice' ); ?>
 	<div id="main">
 		<ul id="browserlist" class="wrap">
 <?php foreach ( browsehappy_get_browser_data() as $browser => $data ) : ?>
