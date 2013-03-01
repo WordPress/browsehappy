@@ -12,7 +12,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Google_Chrome',
 			'normalized' => 1, // just first number
 			'facebook' => 'googlechrome',
-			'url' => 'http://www.google.com/chrome',
+			'url' => 'https://google.com/chrome/',
 			'info' => __( '&#8220;A fast new browser from Google. Try&nbsp;it&nbsp;now!&#8221;', 'browsehappy' ),
 		),
 		'firefox' => (object) array(
@@ -21,7 +21,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Firefox',
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => 'Firefox',
-			'url' => 'http://www.firefox.com/',
+			'url' => 'https://mozilla.org/firefox/',
 			'info' => __( "&#8220;Your online security is Firefox's top priority. Firefox is free, and made to help you get the most out of the&nbsp;web.&#8221;", 'browsehappy' ),
 		),
 		'safari' => (object) array(
@@ -30,7 +30,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Safari',
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => false,
-			'url' => 'http://www.apple.com/safari/',
+			'url' => 'https://www.apple.com/safari/',
 			'info' => __( '&#8220;Safari for Mac and Windows from Apple, the world’s most innovative&nbsp;browser.&#8221;', 'browsehappy' ),
 		),
 		'opera' => (object) array(
@@ -48,7 +48,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Internet_Explorer',
 			'normalized' => 1, // just first number
 			'facebook' => 'internetexplorer',
-			'url' => 'http://www.microsoft.com/windows/internet-explorer/',
+			'url' => 'https://www.microsoft.com/ie',
 			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;', 'browsehappy' ),
 		),
 	);
