@@ -31,7 +31,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => false,
 			'url' => 'http://www.apple.com/safari/',
-			'info' => __( '&#8220;Safari for Mac and Windows from Apple, the world’s most innovative&nbsp;browser.&#8221;', 'browsehappy' ),
+			'info' => __( '&#8220;Safari for Mac from Apple, the world’s most innovative&nbsp;browser.&#8221;', 'browsehappy' ),
 		),
 		'opera' => (object) array(
 			'name' => 'Opera',
@@ -48,7 +48,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Internet_Explorer',
 			'normalized' => 1, // just first number
 			'facebook' => 'internetexplorer',
-			'url' => 'http://www.microsoft.com/windows/internet-explorer/',
+			'url' => 'http://windows.microsoft.com/ie',
 			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;', 'browsehappy' ),
 		),
 	);
