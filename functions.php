@@ -22,7 +22,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => 'Firefox',
 			'url' => 'http://www.firefox.com/',
-			'info' => __( "&#8220;Your online security is Firefox's top priority. Firefox is free, and made to help you get the most out of the&nbsp;web.&#8221;", 'browsehappy' ),
+			'info' => __( "&#8220;Your online security is Firefox&#8217;s top priority. Firefox is free, and made to help you get the most out of the&nbsp;web.&#8221;", 'browsehappy' ),
 		),
 		'safari' => (object) array(
 			'name' => 'Safari',
@@ -31,7 +31,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => false,
 			'url' => 'http://www.apple.com/safari/',
-			'info' => __( '&#8220;Safari for Mac from Apple, the world’s most innovative&nbsp;browser.&#8221;', 'browsehappy' ),
+			'info' => __( '&#8220;Safari for Mac from Apple, the world&#8217;s most innovative&nbsp;browser.&#8221;', 'browsehappy' ),
 		),
 		'opera' => (object) array(
 			'name' => 'Opera',
