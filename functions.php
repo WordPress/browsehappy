@@ -193,6 +193,12 @@ class BrowseHappy_WP extends WP {
 	}
 }
 
+function browsehappy_load_textdomain() {
+	load_theme_textdomain( 'browsehappy', get_template_directory() . '/languages' );
+}
+
+add_action( 'after_setup_theme', 'browsehappy_load_textdomain' );
+
 if ( function_exists( 'browsehappy_parse_user_agent' ) )
 	add_action( 'browsehappy_browser_notice', 'browsehappy_browser_notice' );
 
