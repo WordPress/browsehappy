@@ -112,7 +112,7 @@ a:hover, a:active {
 
 #i18n-alert {
 	text-align: center;
-	padding: 10px;
+	padding: 10px 0;
 	background: #2B4141 url(imgs/bg-footer.png) repeat-x 0 -10px;
 	width: 100%;
 	font-family: "lemonde-courrier-1","lemonde-courrier-2", Helvetica, Arial, sans-serif;
@@ -140,7 +140,7 @@ header {
 	text-align: center;
 	border-top: 1px solid #9DC8C3;
 	padding: 70px 0;
-	background: url(imgs/bg-header.png) repeat-x left bottom;
+	background: url(imgs/bg-header.png?1) repeat-x left bottom;
 }
 
 header h1 {
@@ -475,6 +475,10 @@ footer h2 {
 	float: right;
 	margin-right: 15px;
 	position: relative;
+}
+
+#share h2 {
+	margin-right: 84px;
 }
 
 #share nav {

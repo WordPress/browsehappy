@@ -48,7 +48,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Internet_Explorer',
 			'normalized' => 1, // just first number
 			'facebook' => 'internetexplorer',
-			'url' => 'http://www.microsoft.com/windows/internet-explorer/',
+			'url' => 'http://windows.microsoft.com/ie',
 			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;', 'browsehappy' ),
 		),
 	);
@@ -227,6 +227,19 @@ function browsehappy_browser_notice() {
 			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
 		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
 	<?php endif; ?>
+	</div>
+	<?php
+}
+
+if ( class_exists( 'Browse_Happy_Locale' ) )
+	add_action( 'browsehappy_locale_notice', 'browsehappy_locale_notice' );
+
+function browsehappy_locale_notice() {
+	if ( 0 === strpos( Browse_Happy_Locale::locale(), 'en' ) ) // && Browse_Happy_Locale::$guessed )
+		return;
+	?>
+	<div id="i18n-alert">
+		<p><?php printf( __( 'Browse Happy is also available in English. <a href="%s">Click here to change the language to English</a>.', 'browsehappy' ), '/?locale=en' ); ?></p>
 	</div>
 	<?php
 }

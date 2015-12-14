@@ -18,7 +18,7 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo get_template_directory_uri(); ?>/imgs/apple-touch-icon-114x114.png" />
 
 	<!--[if (gt IE 6)|!(IE)]><!-->
-		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css?1" />
+		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css?3" />
 		<script src="<?php echo get_template_directory_uri(); ?>/js/modernizr-1.6.min.js"></script>
 		<script src="http://use.typekit.com/lsw6yis.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -28,13 +28,7 @@
 </head>
 
 <body>
-<?php
-/*
-<div id="i18n-alert">
-	<p>Browse Happy is also available in %s. <a href="%s">Click here to change the language to %s</a>.</p>
-</div>
-*/
-?>
+<?php do_action( 'browsehappy_locale_notice' ); ?>
 <div id="body-wrap">
 
 	<header>
@@ -74,6 +68,9 @@ echo $what; ?></p>
 					<ul>
 						<li class="twitter"><a onclick="window.open(this.href, 'twittershare', 'status=0,toolbar=0,location=0,menubar=0,directories=0,resizable=0,scrollbars=0,height=250,width=500'); return false;" href="http://twitter.com/share?url=<?php echo urlencode( home_url( '/' ) ); ?>&amp;text=<?php echo urlencode( __( 'Browse Happy: Online. Worry-free. Upgrade your browser today!', 'browsehappy' ) ); ?>" title="<?php esc_attr_e( 'Share on Twitter', 'browsehappy' ); ?>">Twitter</a></li>
 <?php
+$redirect_uri = home_url( '/' );
+if ( isset( $_GET['locale'] ) )
+	$redirect_uri = add_query_arg( 'locale', urlencode( $_GET['locale'] ), $redirect_uri );
 $facebook_pieces = array(
 	'app_id=180651631983617', // Browse Happy app
 	'link=' . home_url( '/' ),
@@ -82,6 +79,7 @@ $facebook_pieces = array(
 	'description=' . urlencode( $what ),
 	'message=' . urlencode( __( 'Online. Worry-free. Upgrade your browser today!', 'browsehappy' ) ),
 	'display=popup',
+	'redirect_uri=' . $redirect_uri,
 );
 ?>
 						<li class="facebook"><a onclick="window.open(this.href, 'fbshare', 'status=0,toolbar=0,location=0,menubar=0,directories=0,resizable=0,scrollbars=0,height=325,width=540'); return false;" href="http://www.facebook.com/dialog/feed?<?php echo implode( '&', $facebook_pieces ); ?>" title="<?php esc_attr_e( 'Share on Facebook', 'browsehappy' ); ?>">Facebook</a></li>
@@ -89,7 +87,7 @@ $facebook_pieces = array(
 				</nav>
 			</section><!-- #share -->
 			<div id="byline">
-				<a href="http://wordpress.org/" title="WordPress"><?php printf( __( 'Brought to you by %s', 'browsehappy' ), 'WordPress' ); ?></a>
+				<a href="<?php echo esc_url( __( 'http://wordpress.org/', 'browsehappy' ) ); ?>" title="WordPress"><?php printf( __( 'Brought to you by %s', 'browsehappy' ), 'WordPress' ); ?></a>
 			</div><!-- #byline -->
 		</div>
 	</footer>
