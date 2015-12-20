@@ -6,15 +6,6 @@
 function browsehappy_get_browser_data( $browser = false ) {
 
 	$data = array(
-		'chrome' => (object) array(
-			'name' => 'Google Chrome',
-			'long_name' => 'Google Chrome',
-			'wikipedia' => 'Google_Chrome',
-			'normalized' => 1, // just first number
-			'facebook' => 'googlechrome',
-			'url' => 'http://www.google.com/chrome',
-			'info' => __( '&#8220;A fast new browser from Google. Try&nbsp;it&nbsp;now!&#8221;', 'browsehappy' ),
-		),
 		'firefox' => (object) array(
 			'name' => 'Mozilla Firefox',
 			'long_name' => 'Mozilla Firefox',
@@ -23,6 +14,15 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'facebook' => 'Firefox',
 			'url' => 'http://www.firefox.com/',
 			'info' => __( "&#8220;Your online security is Firefox's top priority. Firefox is free, and made to help you get the most out of the&nbsp;web.&#8221;", 'browsehappy' ),
+		),
+		'chrome' => (object) array(
+			'name' => 'Google Chrome',
+			'long_name' => 'Google Chrome',
+			'wikipedia' => 'Google_Chrome',
+			'normalized' => 1, // just first number
+			'facebook' => 'googlechrome',
+			'url' => 'http://www.google.com/chrome',
+			'info' => __( '&#8220;A fast new browser from Google. Try&nbsp;it&nbsp;now!&#8221;', 'browsehappy' ),
 		),
 		'safari' => (object) array(
 			'name' => 'Safari',
