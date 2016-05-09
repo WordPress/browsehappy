@@ -39,7 +39,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'wikipedia' => 'Opera',
 			'normalized' => 1, // just first number
 			'facebook' => 'Opera',
-			'url' => 'http://www.opera.com/',
+			'url' => 'https://www.opera.com/',
 			'info' => __( '&#8220;The fastest browser on Earth—secure, powerful and easy to use, with excellent privacy protection. And&nbsp;it&nbsp;is&nbsp;free.&#8221;', 'browsehappy' ),
 		),
 		'edge' => (object) array(
