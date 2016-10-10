@@ -192,9 +192,9 @@ function browsehappy_like_button( $browser ) {
 		return;
 	}
 
-	?>
-	<p class="likebutton"><iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2F<?php echo $facebook_page; ?>&amp;layout=button_count&amp;show_faces=false&amp;width=172&amp;action=like&amp;font=lucida+grande&amp;colorscheme=light&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:172px; height:20px;"></iframe></p>
-	<?php
+?>
+<p class="likebutton"><iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2F<?php echo $facebook_page; ?>&amp;layout=button_count&amp;show_faces=false&amp;width=172&amp;action=like&amp;font=lucida+grande&amp;colorscheme=light&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:172px; height:20px;"></iframe></p>
+<?php
 }
 
 add_action( 'init', 'browsehappy_init' );
@@ -238,24 +238,24 @@ function browsehappy_browser_notice() {
 		return;
 	?>
 	<div id="browser-status" class="wrap">
-		<?php if ( $results['name'] == 'Internet Explorer' && strpos( $ua, 'Windows NT 5.' ) !== false ) : ?>
-			<?php if ( $results['insecure'] ) : ?>
-				<p><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
-				<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
-			<?php else : ?>
-				<p><?php _e( 'It looks like you&#8217;re using an old version of Internet Explorer.', 'browsehappy' ); ?>
-			<?php endif; ?>
-			<?php _e( 'On Windows XP, you are unable to update to the latest version. For the best experience on the web, we suggest you try a new browser.', 'browsehappy' ); ?></p>
-		<?php elseif ( $results['insecure'] ) : ?>
-			<p class="browser-status-text"><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
-				<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
-				<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
-			<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+	<?php if ( $results['name'] == 'Internet Explorer' && strpos( $ua, 'Windows NT 5.' ) !== false ) : ?>
+		<?php if ( $results['insecure'] ) : ?>
+			<p><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+                        <?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
 		<?php else : ?>
-			<p class="browser-status-text"><?php printf( __( 'Your browser is out of date! It looks like you&#8217;re using an old version of %s.', 'browsehappy' ), $results['name'] ); ?>
-				<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
-			<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+			<p><?php _e( 'It looks like you&#8217;re using an old version of Internet Explorer.', 'browsehappy' ); ?>
 		<?php endif; ?>
+			<?php _e( 'On Windows XP, you are unable to update to the latest version. For the best experience on the web, we suggest you try a new browser.', 'browsehappy' ); ?></p>
+	<?php elseif ( $results['insecure'] ) : ?>
+		<p class="browser-status-text"><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+			<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
+			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+	<?php else : ?>
+		<p class="browser-status-text"><?php printf( __( 'Your browser is out of date! It looks like you&#8217;re using an old version of %s.', 'browsehappy' ), $results['name'] ); ?>
+			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+	<?php endif; ?>
 	</div>
 	<?php
 }
