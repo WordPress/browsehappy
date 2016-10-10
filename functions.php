@@ -10,6 +10,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Google Chrome',
 			'long_name' => 'Google Chrome',
 			'wikipedia' => 'Google_Chrome',
+			'wikidata' => 'Q777',
 			'normalized' => 1, // just first number
 			'facebook' => 'googlechrome',
 			'url' => 'https://www.google.com/chrome',
@@ -19,6 +20,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Mozilla Firefox',
 			'long_name' => 'Mozilla Firefox',
 			'wikipedia' => 'Firefox',
+			'wikidata' => 'Q698',
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => 'Firefox',
 			'url' => 'https://www.firefox.com/',
@@ -28,6 +30,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Safari',
 			'long_name' => 'Apple Safari',
 			'wikipedia' => 'Safari',
+			'wikidata' => 'Q35773',
 			'normalized' => 1.5, // include second number if non-zero
 			'facebook' => false,
 			'url' => 'https://www.apple.com/safari/',
@@ -37,6 +40,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Opera',
 			'long_name' => 'Opera',
 			'wikipedia' => 'Opera',
+			'wikidata' => 'Q41242',
 			'normalized' => 1, // just first number
 			'facebook' => 'Opera',
 			'url' => 'http://www.opera.com/',
@@ -46,6 +50,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Microsoft Edge',
 			'long_name' => 'Microsoft Edge',
 			'wikipedia' => 'Microsoft_Edge',
+			'wikidata' => 'Q18698690',
 			'normalized' => 1, // just first number
 			'facebook' => 'MicrosoftEdge',
 			'url' => 'https://www.microsoft.com/en-us/windows/microsoft-edge',
@@ -55,6 +60,7 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'name' => 'Internet Explorer',
 			'long_name' => 'Microsoft Internet Explorer',
 			'wikipedia' => 'Internet_Explorer',
+			'wikidata' => 'Q1575',
 			'normalized' => 1, // just first number
 			'facebook' => 'internetexplorer',
 			'url' => 'http://windows.microsoft.com/ie',
@@ -79,63 +85,66 @@ function browsehappy_echo_version( $browser ) {
 
 function browsehappy_fetch_version( $browser, $normalize = true ) {
 
-	$fragment = browsehappy_get_browser_data( $browser )->wikipedia;
-	if ( ! $fragment )
+	$fragment = browsehappy_get_browser_data( $browser )->wikidata;
+	if ( ! $fragment ) {
 		return false;
+	}
 
 	// Unexpiring transients are autoloaded. We expire these manually on cron instead.
 	$stored_version = get_transient( 'browsehappy_version_' . $browser );
 	if ( false !== $stored_version ) {
-		if ( $normalize )
+		if ( $normalize ) {
 			return browsehappy_normalize_version( $browser, $stored_version );
+		}
 		return $stored_version;
 	}
 
-	$url = 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=php&titles=Template:Latest_stable_software_release/';
-	$url .= $fragment;
-
-	$response = wp_remote_get( $url );
-
-	if ( is_wp_error( $response ) )
-		return false;
-
-	if ( ! $content = wp_remote_retrieve_body( $response ) )
-		return false;
-
-	if ( ! is_serialized( $content ) )
-		return false;
-
-	$content = maybe_unserialize( $content );
-	$page = array_pop( $content['query']['pages'] );
-	$raw_data = explode( "\n", $page['revisions'][0]['*'] );
-
-	$version = false;
-	foreach( $raw_data as $data ) {
-		$data = trim( $data, '| ' );
-		if ( false !== strpos( $data, 'Android' ) || false !== strpos( $data, 'iOS' ) )
-			continue;
-		if ( false !== strpos( $data, 'Linux' ) && false === strpos( $data, 'Mac OS X' ) && false === strpos( $data, 'Windows' ) && false === strpos( $data, 'Microsoft' ) )
-			continue;
-		if ( ( false !== $pos = strpos( $data, 'latest_release_version' ) ) || ( false !== $pos = strpos( $data, 'latest release version' ) ) ) {
-			if ( $pos )
-				$data = substr( $data, $pos );
-			$version = trim( str_replace( array( 'latest_release_version', 'latest release version', '=' ), '', $data ), '| ' ) . " ";
-			$version = str_replace( "'''Mac OS X''' and '''Microsoft Windows'''<br />", '', $version );
-			$version = str_replace( "'''Windows 10'''<br>", '', $version );
-			$version = substr( $version, 0, strpos( $version, ' ' ) );
-			break;
+	// See https://github.com/WordPress/browsehappy/issues/37
+	$query = "
+		SELECT ?version WHERE {
+			wd:{$fragment} p:P348 [
+				ps:P348 ?version;
+				pq:P548 wd:Q12355314;
+				wikibase:rank wikibase:PreferredRank
+			].
 		}
+		LIMIT 1
+	";
+
+	$request = wp_remote_get( add_query_arg(
+		array(
+			'format' => 'json',
+			'query'  => rawurlencode( $query ),
+		),
+		'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
+	) );
+
+	if ( is_wp_error( $request ) ) {
+		return false;
 	}
 
-	if ( false === $version )
+	$data = json_decode( wp_remote_retrieve_body( $request ) );
+
+	if (
+		empty( $data ) ||
+		empty( $data->results ) ||
+		! is_array( $data->results->bindings ) ||
+		empty( $data->results->bindings[0] ) ||
+		empty( $data->results->bindings[0]->version ) ||
+		empty( $data->results->bindings[0]->version->value )
+	) {
 		return false;
+	}
+
+	$version = $data->results->bindings[0]->version->value;
 
 	$version = preg_replace( '/[^0-9\.]/', '', $version );
 
 	set_transient( 'browsehappy_version_' . $browser, $version );
 
-	if ( $normalize )
+	if ( $normalize ) {
 		return browsehappy_normalize_version( $browser, $version );
+	}
 
 	return $version;
 }
@@ -183,9 +192,9 @@ function browsehappy_like_button( $browser ) {
 		return;
 	}
 
-?>
-<p class="likebutton"><iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2F<?php echo $facebook_page; ?>&amp;layout=button_count&amp;show_faces=false&amp;width=172&amp;action=like&amp;font=lucida+grande&amp;colorscheme=light&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:172px; height:20px;"></iframe></p>
-<?php
+	?>
+	<p class="likebutton"><iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2F<?php echo $facebook_page; ?>&amp;layout=button_count&amp;show_faces=false&amp;width=172&amp;action=like&amp;font=lucida+grande&amp;colorscheme=light&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:172px; height:20px;"></iframe></p>
+	<?php
 }
 
 add_action( 'init', 'browsehappy_init' );
@@ -229,24 +238,24 @@ function browsehappy_browser_notice() {
 		return;
 	?>
 	<div id="browser-status" class="wrap">
-	<?php if ( $results['name'] == 'Internet Explorer' && strpos( $ua, 'Windows NT 5.' ) !== false ) : ?>
-		<?php if ( $results['insecure'] ) : ?>
-			<p><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
-                        <?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
-		<?php else : ?>
-			<p><?php _e( 'It looks like you&#8217;re using an old version of Internet Explorer.', 'browsehappy' ); ?>
-		<?php endif; ?>
+		<?php if ( $results['name'] == 'Internet Explorer' && strpos( $ua, 'Windows NT 5.' ) !== false ) : ?>
+			<?php if ( $results['insecure'] ) : ?>
+				<p><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+				<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
+			<?php else : ?>
+				<p><?php _e( 'It looks like you&#8217;re using an old version of Internet Explorer.', 'browsehappy' ); ?>
+			<?php endif; ?>
 			<?php _e( 'On Windows XP, you are unable to update to the latest version. For the best experience on the web, we suggest you try a new browser.', 'browsehappy' ); ?></p>
-	<?php elseif ( $results['insecure'] ) : ?>
-		<p class="browser-status-text"><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
-			<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
-			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
-		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
-	<?php else : ?>
-		<p class="browser-status-text"><?php printf( __( 'Your browser is out of date! It looks like you&#8217;re using an old version of %s.', 'browsehappy' ), $results['name'] ); ?>
-			<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
-		<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
-	<?php endif; ?>
+		<?php elseif ( $results['insecure'] ) : ?>
+			<p class="browser-status-text"><?php printf( __( 'It looks like you&#8217;re using an insecure version of %s.', 'browsehappy' ), $results['name'] ); ?>
+				<?php _e( 'Using an outdated browser makes your computer unsafe.', 'browsehappy' ); ?>
+				<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+			<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+		<?php else : ?>
+			<p class="browser-status-text"><?php printf( __( 'Your browser is out of date! It looks like you&#8217;re using an old version of %s.', 'browsehappy' ), $results['name'] ); ?>
+				<?php _e( 'For the best experience on the web, please update your browser.', 'browsehappy' ); ?></p>
+			<p class="browser-status-action"><a href="<?php echo esc_url( $results['update_url'] ); ?>"><?php _e( 'Upgrade now!', 'browsehappy' ); ?></a></p>
+		<?php endif; ?>
 	</div>
 	<?php
 }
