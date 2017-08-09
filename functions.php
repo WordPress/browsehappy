@@ -66,6 +66,15 @@ function browsehappy_get_browser_data( $browser = false ) {
 			'url' => 'https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads',
 			'info' => __( '&#8220;Designed to help you take control of your privacy and browse with confidence. Free from&nbsp;Microsoft.&#8221;', 'browsehappy' ),
 		),
+		'vivaldi' => (object) array(
+			'name' => 'Vivaldi',
+			'long_name' => 'Vivaldi',
+			'wikipedia' => 'Vivaldi',
+			'normalized' => 2, // just first number
+			'facebook' => 'vivaldi.browser',
+			'url' => 'https://vivaldi.com/',
+			'info' => __( '&#8220;Vivaldi, a browser for our friends&#8221;', 'browsehappy' ),
+		),
 	);
 	if ( false === $browser )
 		return $data;
