@@ -601,10 +601,28 @@ html[dir="rtl"] #share nav li {
 	font-variant: initial;
 }
 
-@media (max-width: 1168px) { #main .wrap { max-width: 960px; } }
+@media (max-width: 1168px) {
+	#main .wrap {
+		max-width: 728px;
+	}
+	#browserlist li {
+		width: 242px;
+	}
+}
 @media (max-width: 976px)  { #main .wrap { max-width: 768px; } }
-@media (max-width: 784px)  { #main .wrap { max-width: 576px; } }
-@media (max-width: 592px)  { #main .wrap { max-width: 384px; } }
+@media (max-width: 784px)  {
+	#main .wrap {
+		max-width: 484px;
+	}
+}
+@media (max-width: 592px)  {
+	#main .wrap {
+		max-width: 384px;
+	}
+	#browserlist li {
+		width: 192px;
+	}
+}
 @media (max-width: 500px) {
 	header h1 {
 		font-size: 900%;
@@ -640,6 +658,7 @@ html[dir="rtl"] #share nav li {
 		display: block;
 		float: none;
 		margin: 0 auto;
+		width: 242px;
 	}
 	header h1 {
 		font-size: 600%;
