@@ -319,10 +319,6 @@ html[dir="rtl"] #browserlist li {
 	background-position: -375px 0;
 }
 
-#browserlist li#ie .icon {
-	background-position: -500px 0;
-}
-
 #browserlist li#edge .icon {
 	background-position: -625px 0;
 }
