@@ -690,6 +690,6 @@ html[dir="rtl"] #share nav li {
 	#browserlist li .icon, #share nav li a {
 		background-image: url(imgs/browsehappy-sprite-2x.png);
 		background-repeat: no-repeat;
-		background-size: 750px 170px;
+		background-size: 875px 170px;
 	}
 }
