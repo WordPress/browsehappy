@@ -1,5 +1,5 @@
 <?php defined( 'ABSPATH' ) or die(); ?>
-<!DOCTYPE html>  
+<!DOCTYPE html>
 
 <!--[if lt IE 7 ]> <html <?php language_attributes(); ?> class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html <?php language_attributes(); ?> class="no-js ie7"> <![endif]-->
@@ -14,7 +14,7 @@
 	<meta name="author" content="WordPress" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css?14" />
+	<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css?15" />
 	<script src="<?php echo get_template_directory_uri(); ?>/js/modernizr-1.6.min.js"></script>
 	<script src="https://use.typekit.com/lsw6yis.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
