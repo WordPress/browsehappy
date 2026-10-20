@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> **This repository is archived.** The Browse Happy theme is maintained in the WordPress.org Meta repository, at [`browsehappy.com/public_html`](https://github.com/WordPress/wordpress.org/tree/trunk/browsehappy.com/public_html), with a local wp-env environment in [`environments/browsehappy`](https://github.com/WordPress/wordpress.org/tree/trunk/environments/browsehappy). File bugs on [Meta Trac](https://meta.trac.wordpress.org/newticket?component=Browse+Happy) under *Browse Happy*, and send pull requests to the [Meta Git mirror](https://github.com/WordPress/wordpress.org). Issues and pull requests opened here are no longer monitored.
+> **This repository is archived.** The Browse Happy theme is maintained in the WordPress.org Meta repository, at [`browsehappy.com/public_html`](https://github.com/WordPress/wordpress.org/tree/trunk/browsehappy.com/public_html), with a local wp-env environment in [`environments/browsehappy`](https://github.com/WordPress/wordpress.org/tree/trunk/environments/browsehappy). File bugs on [Meta Trac](https://meta.trac.wordpress.org/newticket?component=Browse+Happy) under *Browse Happy*, and send pull requests to the [Meta Git mirror](https://github.com/WordPress/wordpress.org).
 >
 > The README below is kept for reference and is no longer maintained.
 
